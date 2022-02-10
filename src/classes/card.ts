@@ -1,8 +1,8 @@
 export interface Card {
-    topValue: number;
-    rightValue: number;
-    bottomValue: number;
-    leftValue: number;
+    top: number | string;
+    right: number | string;
+    bottom: number | string;
+    left: number | string;
     name: string;
     id: number;
 }

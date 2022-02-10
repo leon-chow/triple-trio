@@ -1,9 +1,9 @@
-import { useState } from "react";
 import Card from "../card/card";
-import { Tiles } from "../constants";
+import { Tiles } from "../../utils/constants";
 import Tile from "../tile/tile";
 
 import "./board.css";
+import { getRandomHand } from "../../services/card.service";
 
 const Board = (): JSX.Element => {
   const tileComponents = Tiles.map((num: number) => {
