@@ -14,7 +14,9 @@ export const getRandomHand = async (): Promise<ICard[]> => {
                 left: card.stats.formatted.left, image: card.image,
             }
             randomHand.push(cardObj);
-        });
+        }).catch(
+            err => console.log(`Error: ${err}`),
+        );
     }
     console.log(randomHand);
     return randomHand;

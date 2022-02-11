@@ -1,6 +1,6 @@
 import "./tile.css";
 
-const Tile = (props: any) => {
+const Tile = (props: { number: number }) => {
   return <div className="tile"> {props.number} </div>;
 };
 

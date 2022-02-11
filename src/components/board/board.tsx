@@ -1,6 +1,6 @@
 import { ICard } from "../../classes/card";
-import Card from "../card/card";
 import { Tiles } from "../../utils/constants";
+import Card from "../card/card";
 import Tile from "../tile/tile";
 
 import "./board.css";
@@ -20,24 +20,28 @@ const Board = (): JSX.Element => {
     return <Tile key={`key${num}`} number={num} />;
   });
 
+  const playerOneHandComponents = playerOneHand?.map((card: ICard) => {
+    return <Card key={`player1card${card.id}`} cardData={card} />;
+  });
+
+  const playerTwoHandComponents = playerTwoHand?.map((card: ICard) => {
+    return <Card key={`player2card${card.id}`} cardData={card} />;
+  });
+
   return (
     <div className="gameRoot">
-      <div className="playerHand">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-      </div>
-      <div className="boardRoot">
-        <h2 className="title"> Triple Trio </h2>
-        <div className="gridRoot"> {tileComponents} </div>
-      </div>
-      <div className="playerHand">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-      </div>
+      {playerOneHandComponents && playerTwoHandComponents ? (
+        <>
+          <div className="playerHand">{playerOneHandComponents}</div>
+          <div className="boardRoot">
+            <h2 className="title"> Triple Trio </h2>
+            <div className="gridRoot"> {tileComponents} </div>
+          </div>
+          <div className="playerHand">{playerTwoHandComponents}</div>
+        </>
+      ) : (
+        <div className="loading"> Loading... </div>
+      )}
     </div>
   );
 };
