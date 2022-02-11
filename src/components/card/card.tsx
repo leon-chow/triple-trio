@@ -1,24 +1,16 @@
 import "./card.css";
 import { ICard } from "../../classes/card";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const Card = (props: { cardData: ICard }): JSX.Element => {
-  const [selectedCard, setSelectedCard] = useState<number>();
-
-  useEffect(() => {}, [selectedCard]);
-
-  const selectCard = (cardId: number) => {
-    console.log(cardId);
-    setSelectedCard(cardId);
-    console.log(`new selected card is ${selectedCard}`);
-  };
-
+const Card = (props: {
+  cardData: ICard;
+  isSelected: boolean;
+  selectCard: Function;
+}): JSX.Element => {
   return (
     <div
-      className={`cardRoot ${
-        selectedCard === props.cardData.id ? "cardSelected" : ""
-      }`}
-      onClick={() => selectCard(props.cardData.id)}
+      className={`cardRoot ${props.isSelected ? "cardSelected" : ""}`}
+      onClick={() => props.selectCard(props.cardData.id)}
     >
       <img
         className="cardImage"

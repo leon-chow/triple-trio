@@ -10,22 +10,45 @@ import { useEffect, useState } from "react";
 const Board = (): JSX.Element => {
   const [playerOneHand, setPlayerOneHand] = useState<ICard[]>();
   const [playerTwoHand, setPlayerTwoHand] = useState<ICard[]>();
+  const [selectedCard, setSelectedCard] = useState<number | null>();
 
   useEffect(() => {
     getRandomHand().then((hand) => setPlayerOneHand(hand));
     getRandomHand().then((hand) => setPlayerTwoHand(hand));
   }, []);
 
+  const selectCard = (cardId: number) => {
+    if (selectedCard === cardId) {
+      setSelectedCard(null);
+    } else {
+      setSelectedCard(cardId);
+    }
+  };
+
   const tileComponents = Tiles.map((num: number) => {
     return <Tile key={`key${num}`} number={num} />;
   });
 
   const playerOneHandComponents = playerOneHand?.map((card: ICard) => {
-    return <Card key={`player1card${card.id}`} cardData={card} />;
+    return (
+      <Card
+        isSelected={selectedCard === card.id}
+        selectCard={selectCard}
+        key={`player1card${card.id}`}
+        cardData={card}
+      />
+    );
   });
 
   const playerTwoHandComponents = playerTwoHand?.map((card: ICard) => {
-    return <Card key={`player2card${card.id}`} cardData={card} />;
+    return (
+      <Card
+        selectCard={selectCard}
+        isSelected={selectedCard === card.id}
+        key={`player2card${card.id}`}
+        cardData={card}
+      />
+    );
   });
 
   return (
