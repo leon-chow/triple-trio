@@ -1,16 +1,16 @@
 import "./card.css";
 import { ICard } from "../../classes/card";
-import { useState } from "react";
 
 const Card = (props: {
   cardData: ICard;
   isSelected: boolean;
   selectCard: Function;
+  isDisabled: boolean;
 }): JSX.Element => {
   return (
     <div
       className={`cardRoot ${props.isSelected ? "cardSelected" : ""}`}
-      onClick={() => props.selectCard(props.cardData.id)}
+      onClick={() => !props.isDisabled && props.selectCard(props.cardData.id)}
     >
       <img
         className="cardImage"

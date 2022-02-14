@@ -6,15 +6,19 @@ import Tile from "../tile/tile";
 import "./board.css";
 import { getRandomHand } from "../../services/card.service";
 import { useEffect, useState } from "react";
+import { turnOrder } from "../../utils/gameplay";
 
 const Board = (): JSX.Element => {
   const [playerOneHand, setPlayerOneHand] = useState<ICard[]>();
   const [playerTwoHand, setPlayerTwoHand] = useState<ICard[]>();
+  // HANDLE DUPLICATE CARD CASE, BOTH PLAYERS SHOULD BE ABLE TO HAVE THE SAME CARDS, BUT BOTH CARDS ARE HIGHLIGHTED WHEN PLAYER SELECTS THEM
   const [selectedCard, setSelectedCard] = useState<number | null>();
+  const [playerTurn, setPlayerTurn] = useState<number>();
 
   useEffect(() => {
     getRandomHand().then((hand) => setPlayerOneHand(hand));
     getRandomHand().then((hand) => setPlayerTwoHand(hand));
+    setPlayerTurn(turnOrder);
   }, []);
 
   const selectCard = (cardId: number) => {
@@ -32,10 +36,11 @@ const Board = (): JSX.Element => {
   const playerOneHandComponents = playerOneHand?.map((card: ICard) => {
     return (
       <Card
-        isSelected={selectedCard === card.id}
         selectCard={selectCard}
+        isSelected={selectedCard === card.id && playerTurn === 0}
         key={`player1card${card.id}`}
         cardData={card}
+        isDisabled={playerTurn !== 0}
       />
     );
   });
@@ -44,9 +49,10 @@ const Board = (): JSX.Element => {
     return (
       <Card
         selectCard={selectCard}
-        isSelected={selectedCard === card.id}
+        isSelected={selectedCard === card.id && playerTurn === 1}
         key={`player2card${card.id}`}
         cardData={card}
+        isDisabled={playerTurn !== 1}
       />
     );
   });
