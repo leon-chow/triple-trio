@@ -6,14 +6,13 @@ import Tile from "../tile/tile";
 import "./board.css";
 import { getRandomHand } from "../../services/card.service";
 import { useEffect, useState } from "react";
-import { turnOrder } from "../../utils/gameplay";
+import { turnOrder } from "../../utils/setup";
 
 const Board = (): JSX.Element => {
   const [playerOneHand, setPlayerOneHand] = useState<ICard[]>();
   const [playerTwoHand, setPlayerTwoHand] = useState<ICard[]>();
-  // HANDLE DUPLICATE CARD CASE, BOTH PLAYERS SHOULD BE ABLE TO HAVE THE SAME CARDS, BUT BOTH CARDS ARE HIGHLIGHTED WHEN PLAYER SELECTS THEM
-  const [selectedCard, setSelectedCard] = useState<number | null>();
-  const [playerTurn, setPlayerTurn] = useState<number>();
+  const [selectedCard, setSelectedCard] = useState<ICard | null>();
+  const [playerTurn, setPlayerTurn] = useState<number>(0);
 
   useEffect(() => {
     getRandomHand().then((hand) => setPlayerOneHand(hand));
@@ -21,23 +20,21 @@ const Board = (): JSX.Element => {
     setPlayerTurn(turnOrder);
   }, []);
 
-  const selectCard = (cardId: number) => {
-    if (selectedCard === cardId) {
-      setSelectedCard(null);
-    } else {
-      setSelectedCard(cardId);
-    }
-  };
-
   const tileComponents = Tiles.map((num: number) => {
-    return <Tile key={`key${num}`} number={num} />;
+    return (
+      <Tile
+        key={`tile${num}`}
+        number={num}
+        card={selectedCard ? selectedCard : null}
+      />
+    );
   });
 
   const playerOneHandComponents = playerOneHand?.map((card: ICard) => {
     return (
       <Card
-        selectCard={selectCard}
-        isSelected={selectedCard === card.id && playerTurn === 0}
+        selectCard={setSelectedCard}
+        isSelected={selectedCard?.id === card.id && playerTurn === 0}
         key={`player1card${card.id}`}
         cardData={card}
         isDisabled={playerTurn !== 0}
@@ -48,8 +45,8 @@ const Board = (): JSX.Element => {
   const playerTwoHandComponents = playerTwoHand?.map((card: ICard) => {
     return (
       <Card
-        selectCard={selectCard}
-        isSelected={selectedCard === card.id && playerTurn === 1}
+        selectCard={setSelectedCard}
+        isSelected={selectedCard?.id === card.id && playerTurn === 1}
         key={`player2card${card.id}`}
         cardData={card}
         isDisabled={playerTurn !== 1}
@@ -61,12 +58,18 @@ const Board = (): JSX.Element => {
     <div className="gameRoot">
       {playerOneHandComponents && playerTwoHandComponents ? (
         <>
-          <div className="playerHand">{playerOneHandComponents}</div>
+          <div>
+            <div className="playerLabel"> Player 1 Hand </div>
+            <div className="playerHand">{playerOneHandComponents}</div>
+          </div>
           <div className="boardRoot">
-            <h2 className="title"> Triple Trio </h2>
+            <h2 className="title"> Player {playerTurn + 1} turn </h2>
             <div className="gridRoot"> {tileComponents} </div>
           </div>
-          <div className="playerHand">{playerTwoHandComponents}</div>
+          <div>
+            <div className="playerLabel"> Player 2 Hand </div>
+            <div className="playerHand">{playerTwoHandComponents}</div>
+          </div>
         </>
       ) : (
         <div className="loading"> Loading... </div>

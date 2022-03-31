@@ -10,7 +10,7 @@ const Card = (props: {
   return (
     <div
       className={`cardRoot ${props.isSelected ? "cardSelected" : ""}`}
-      onClick={() => !props.isDisabled && props.selectCard(props.cardData.id)}
+      onClick={() => !props.isDisabled && props.selectCard(props.cardData)}
     >
       <img
         className="cardImage"
