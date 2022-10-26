@@ -1,13 +1,22 @@
 import "./card.css";
+import { ICard } from "../../classes/card";
 
-const Card = (): JSX.Element => {
+const Card = (props: {
+  cardData: ICard;
+  isSelected: boolean;
+  selectCard: Function;
+  isDisabled: boolean;
+}): JSX.Element => {
   return (
-    <div className="cardRoot">
-      <div className="numbersBox">
-        <div className="numberBoxRowOdd"> 1 </div>
-        <div className="numberBoxRowEven"> 23 </div>
-        <div className="numberBoxRowOdd"> 4 </div>
-      </div>
+    <div
+      className={`cardRoot ${props.isSelected ? "cardSelected" : ""}`}
+      onClick={() => !props.isDisabled && props.selectCard(props.cardData)}
+    >
+      <img
+        className="cardImage"
+        src={props.cardData.image}
+        alt={props.cardData.name}
+      />
     </div>
   );
 };

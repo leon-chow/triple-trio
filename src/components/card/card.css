@@ -6,8 +6,20 @@
 .cardRoot {
   position: relative;
   width: 60px;
-  height: 80px;
-  border: 1px solid black;
+  height: 70px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.cardSelected {
+  border: 2px solid blue;
+  box-shadow: 1px 1px;
+  width: 80px;
+  height: 90px;
+}
+
+.notCardSelected {
+  border: 2px solid black;
 }
 
 .numbersBox {
