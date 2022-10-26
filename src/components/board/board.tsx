@@ -20,6 +20,7 @@ const Board = (): JSX.Element => {
     setPlayerTurn(turnOrder);
   }, []);
 
+  // TODO: Add board state to keep track of board tiles, right now it displays the selectedCard, but we only want that to happen once the user selects card and tile
   const tileComponents = Tiles.map((num: number) => {
     return (
       <Tile
